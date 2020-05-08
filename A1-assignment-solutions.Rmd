@@ -1,0 +1,107 @@
+---
+title: "R Notebook"
+author: "Kevin Schnepel, 301234567"
+output:
+  html_document: default
+  html_notebook: default
+---
+
+# Instructions
+
+1. Change the "author" listing in the YAML header to reflect your name and SFU id.
+
+2. Make the proper modifications below, then *knit* your R Markdown Notebook into a ``.html`` file.
+
+3. Submit the completed ``.Rmd`` and ``.html`` file on Canvas.
+
+# Assignment 1
+
+
+## Name and ID
+
+```{r}
+name <- "Kevin Schnepel"
+```
+
+Change your name above, and have R return it below, and in the ``.Rmd``.
+
+```{r}
+print(paste("Hi, my name is",name))
+```
+
+Assign your student ID to an R object `my_sfu_id' and have R display the value.
+
+```{r}
+my_sfu_id <- 301234567
+my_sfu_id
+```
+
+
+
+
+## Swirl
+
+Did you complete the ``swirl`` lesson? Modify the code below to show that you did!
+
+```{r}
+did_you_options <- c("nope","nosirree",":-)","absolutely!")
+did_you <- did_you_options[4]
+```
+
+So, did you complete it?
+
+```{r}
+did_you
+```
+
+## Markdown 
+
+Create a table in markdown (do not need to include an R code chunk) of your schedule this semester with three columns. The first column contains the course code, the second includes the name of the course, and the third the day of week and time of lecture (see *Text Formatting with Markdown* section of CH 21 of r4ds).
+
+Course code |  Course name  |  day/time
+----------- |  -----------  |  ----------
+ECON 387    |  Selected Topics in Economics | Tuesdays: 1.30-2.20pm & 2.30-3.30pm
+ECON 393    |  Public Economics: Taxation   | Wednesdays: 10.30-11.20pm, 12.30-1.20pm & 2.30-3.20pm
+
+## Draw an interactive map of your favourite place!
+
+R allows for interactive content like `leaflet` maps. Install the *leaflet* package in your R console with the command `install.packages("leaflet")` and then modify the code below with the proper coordinates for your favourite place in the world to generate a map. Write one sentence below explaining why it is your favourite place.
+
+
+```{r}
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers(lng=-123.065512, lat=49.274598, popup="Via Tevere Pizzeria")
+```
+
+Via Tevere Pizzeria - best pizza in Vancouver! 
+
+## Access Canada Census Data!
+
+The R package `cancensus` allows users to access canadian census data and to create interesting maps using the census data. Follow the instructions [here](<https://mountainmath.github.io/cancensus/articles/cancensus.html>) to install and get a data set from the package. Note that you'll have to first sign up for an API key. You do this by following the link on the instructions page to the [censusmapper website](<https://censusmapper.ca>). You can see your unique API key by clicking on the right person profile and selecting "edit profile". You should see an API key listed. Insert this API key in the command `options(cancensus.api_key= "your API key here")` and then complete the first step in the "Accessing Census Data" section of [the instructions page](<https://mountainmath.github.io/cancensus/articles/cancensus.html>) that "Returns a data frame with data only". 
+ 
+```{r}
+library(cancensus)
+
+options(cancensus.api_key = "CensusMapper_f8a7e66b1263cfd8596e73babf6cc6b1")
+
+
+census_data <- get_census(dataset='CA16', regions=list(CMA="59933"),
+                          vectors=c("v_CA16_408","v_CA16_409","v_CA16_410"),
+                          level='CSD', use_cache = FALSE, geo_format = NA)
+
+
+
+```
+
+Look inside the data that is loaded and describe what is there in a few sentences. What does each row represent and what information is included? 
+
+```{r}
+head(census_data)
+```
+
+We can use `head()` to look at the first few rows of the data 
+
+*Each observation is a census subdivision region (CSD) in the Vancouer Metro Area. The data contains basic information about population, number of dwellings and number of households. As well as specific dwelling information (occupied private dwellings, single detached house, apartments in buildings with 5 or more stories).*
